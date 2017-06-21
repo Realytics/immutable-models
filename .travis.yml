@@ -1,0 +1,10 @@
+language: node_js
+after_success: npm run coveralls
+deploy:
+  provider: npm
+  email: opensource@realytics.io
+  api_key:
+    secure: YqWd26vWyoXnvAJa1C8g8FOdR+hLCYgoTGNZsfzzg7BlQgXHfoD4E8oDHChb0eALlQudnbx8XwCkFJhHJUdQUagyFtRjfywVi0t8GfKeZ8ofYiDKPMx4xQVN6zCP6hx5nVaDUWmkfCgdur0h4JqGVmpBkCmIyUdNQEJEg1Z5rzBaB4/kZA9dfjqWfKaG6b/5hu6S+jdnCYrZuirwlx/WjfmZ7nq4wVF6a8+9W5Qbjefes62d4tR1HceoYoTuIqu2Ds2jKwQ+VIrBs1yBM3hmdAl3fTHkuACYRJfJPN+D7rV0GxkbDovBBYfdpcUGv+yhaFDMpjXgezRjXEgriklfOOflf0HzyXiRHiEDahnYPtPuBeLh6xu/wBLGZEwAXEkJf3RU07ISaAZ+flr+WuNKjgm3DSJbS6Hhmhr8TpPUhPh/lw5+mcbwxO3JkAAIcXt3WjfyCQ5NIvnB3iVZHFObW2Mjlrf2ZZhQ2Ca2jLXUG2dDOy16jBgCeJRRzM6BXyhFVYPGAEWautwwiWhUD4f4xl53GhhwvHzForoWVg4E3YrUbBm1/GkLEIHqrje5nGqUWvEqszWtHgTfQHMP/IKFuDcU1QEM5I4AdLS5ng7q1sPykwUBUK/6iTNXESVqZ9E09JMPV7MMydCuU/s2YYdL29GqMRoKTQD2UXlih8FwbWE=
+  on:
+    tags: true
+    branch: master

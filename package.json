@@ -1,0 +1,67 @@
+{
+  "name": "immutable-models",
+  "version": "0.1.0",
+  "description": "Create immutable models driven by Immutable.js iterables.",
+  "main": "lib/index.umd.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "clean": "./node_modules/.bin/rimraf lib coverage",
+    "build": "./node_modules/.bin/rimraf lib && ./node_modules/.bin/tsc -p tsconfig.json && ./node_modules/.bin/rollup -c rollup.config.js lib/index.js > lib/index.umd.js",
+    "prepublish": "npm run build",
+    "lint": "./node_modules/.bin/tslint \"src/**/*.ts?(x)\" \"test/**/*.ts?(x)\" -t stylish",
+    "lint:fix": "./node_modules/.bin/tslint \"src/**/*.ts?(x)\" \"test/**/*.ts?(x)\" -t stylish --fix",
+    "coveralls": "cat coverage/lcov.info | node ./node_modules/.bin/coveralls",
+    "pretest": "npm run lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "./node_modules/.bin/rimraf coverage && jest --coverage"
+  },
+  "repository": {
+    "url": "https://github.com/Realytics/immutable-models.git",
+    "type": "git"
+  },
+  "keywords": [
+    "immutable",
+    "iterable",
+    "model",
+    "oop",
+    "hermetization",
+    "typescript"
+  ],
+  "author": "Piotr Oleś <piotrek.oles@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Realytics/immutable-models/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^20.0.1",
+    "coveralls": "^2.13.1",
+    "immutable": "^3.8.1",
+    "jest": "^20.0.4",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.43.0",
+    "ts-jest": "^20.0.6",
+    "ts-loader": "^2.1.0",
+    "tslint": "^5.4.3",
+    "typescript": "^2.3.4"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/test/.*\\.(ts|tsx|js)$",
+    "collectCoverageFrom": ["src/**"],
+    "coverageDirectory": "<rootDir>/coverage",
+    "coverageReporters": ["lcov", "text"],
+    "mapCoverage": true
+  },
+  "dependencies": {}
+}

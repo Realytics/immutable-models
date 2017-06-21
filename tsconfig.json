@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib",
+    "sourceRoot": "./src",
+    "inlineSourceMap": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "stripInternal": true,
+    "strictNullChecks": true,
+    "target": "es5",
+    "jsx": "react",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "lib": [
+      "es5"
+    ],
+    "importHelpers": false
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "compileOnSave": false
+}

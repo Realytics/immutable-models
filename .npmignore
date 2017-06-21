@@ -1,0 +1,10 @@
+/coverage
+/examples
+/test
+rollup.config.js
+tsconfig.json
+tslint.json
+yarn.lock
+.idea
+.travis.yml
+.nvmrc
