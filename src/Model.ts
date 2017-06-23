@@ -16,26 +16,22 @@ export abstract class Model<T> extends IterableModel<TypedMap<T>> {
     return this.data.get(key, notSetValue);
   }
 
-  protected set<K extends keyof T>(key: K, value: T[K], ...args: any[]): this {
-    return this.update(data => data.set(key, value), ...args);
+  protected set<K extends keyof T>(key: K, value: T[K]): this {
+    return this.update(data => data.set(key, value));
   }
 
-  protected remove<K extends keyof T>(key: K, ...args: any[]): this {
-    return this.update(data => data.remove(key), ...args);
+  protected remove<K extends keyof T>(key: K): this {
+    return this.update(data => data.remove(key));
   }
 
-  protected merge(newData: Partial<T>, ...args: any[]): this {
-    return this.update(data => data.merge(newData), ...args);
-  }
-
-  protected mergeDeep(newData: Partial<T>, ...args: any[]): this {
-    return this.update(data => data.mergeDeep(newData), ...args);
+  protected merge(newData: Partial<T>): this {
+    return this.update(data => data.merge(newData));
   }
 
   /**
    * Note: Only `set` and `merge` may be used mutatively.
    */
-  protected withMutations(mutator: (mutable: TypedMap<T>) => any, ...args: any[]): this {
-    return this.update(data => data.withMutations(mutator), ...args);
+  protected withMutations(mutator: (mutable: TypedMap<T>) => any): this {
+    return this.update(data => data.withMutations(mutator));
   }
 }

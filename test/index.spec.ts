@@ -1,5 +1,5 @@
 
-import { IterableModel, Model, TypedRecord } from '../src/index';
+import { IterableModel, Model, ReadonlyModel, TypedRecord } from '../src/index';
 
 describe('index', () => {
   it('should export TypedRecord', () => {
@@ -12,5 +12,9 @@ describe('index', () => {
 
   it('should export Model', () => {
     expect(Model).not.toBeFalsy();
+  });
+
+  it('should export ReadonlyModel', () => {
+    expect(ReadonlyModel).not.toBeFalsy();
   });
 });

@@ -20,7 +20,7 @@ export abstract class IterableModel<I extends Iterable<any, any>> implements Val
   protected static readonly JSON_MEMOIZED = '@@__JSON_MEMOIZED__@@';
 
   protected readonly data: I;
-  private readonly memoized: { [key: string]: any } = {};
+  private memoized: { [key: string]: any } = {};
 
   constructor(data: I) {
     this.data = data;
@@ -60,7 +60,7 @@ export abstract class IterableModel<I extends Iterable<any, any>> implements Val
   /**
    * To improve time and memory performance we can use memoization - it's immutable so result will be always the same.
    */
-  protected memoize<T>(key: string, getter: (data: I) => T): T {
+  protected memoize<M>(key: string, getter: (data: I) => M): M {
     if (!this.memoized.hasOwnProperty(key)) {
       this.memoized[key] = getter(this.data);
     }

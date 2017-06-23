@@ -4,3 +4,4 @@ export { TypedMap } from './TypedMap';
 export { TypedRecord } from './TypedRecord';
 export { IterableModel } from './IterableModel';
 export { Model } from './Model';
+export { ReadonlyModel } from './ReadonlyModel';

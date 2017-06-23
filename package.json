@@ -5,16 +5,16 @@
   "main": "lib/index.umd.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "clean": "./node_modules/.bin/rimraf lib coverage",
-    "build": "./node_modules/.bin/rimraf lib && ./node_modules/.bin/tsc -p tsconfig.json && ./node_modules/.bin/rollup -c rollup.config.js lib/index.js > lib/index.umd.js",
+    "clean": "rimraf lib coverage",
+    "build": "rimraf lib && tsc -p tsconfig.json && rollup -c rollup.config.js lib/index.js > lib/index.umd.js",
     "prepublish": "npm run build",
-    "lint": "./node_modules/.bin/tslint \"src/**/*.ts?(x)\" \"test/**/*.ts?(x)\" -t stylish",
-    "lint:fix": "./node_modules/.bin/tslint \"src/**/*.ts?(x)\" \"test/**/*.ts?(x)\" -t stylish --fix",
-    "coveralls": "cat coverage/lcov.info | node ./node_modules/.bin/coveralls",
+    "lint": "tslint \"src/**/*.ts?(x)\" \"test/**/*.ts?(x)\" -t stylish",
+    "lint:fix": "tslint \"src/**/*.ts?(x)\" \"test/**/*.ts?(x)\" -t stylish --fix",
+    "coveralls": "cat coverage/lcov.info | node coveralls",
     "pretest": "npm run lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "./node_modules/.bin/rimraf coverage && jest --coverage"
+    "test:coverage": "rimraf coverage && jest --coverage"
   },
   "repository": {
     "url": "https://github.com/Realytics/immutable-models.git",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/jest": "^20.0.1",
     "coveralls": "^2.13.1",
-    "immutable": "^3.8.1",
+    "immutable": "3.8.0",
     "jest": "^20.0.4",
     "rimraf": "^2.6.1",
     "rollup": "^0.43.0",
@@ -46,7 +46,7 @@
     "typescript": "^2.3.4"
   },
   "peerDependencies": {
-    "immutable": "^3.8.1"
+    "immutable": "^3.8.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -58,9 +58,14 @@
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "/test/.*\\.(ts|tsx|js)$",
-    "collectCoverageFrom": ["src/**"],
+    "collectCoverageFrom": [
+      "src/**"
+    ],
     "coverageDirectory": "<rootDir>/coverage",
-    "coverageReporters": ["lcov", "text"],
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ],
     "mapCoverage": true
   },
   "dependencies": {}

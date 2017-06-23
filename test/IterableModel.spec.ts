@@ -4,10 +4,6 @@ import { IterableModel } from '../src/IterableModel';
 import { TypedRecord } from '../src/TypedRecord';
 
 describe('IterableModel', () => {
-  it('should export IterableModel', () => {
-    expect(IterableModel).not.toBeFalsy();
-  });
-
   it('should allow to define model with list as iterable', () => {
     // tslint:disable-next-line
     class ListModel extends IterableModel<List<string>> {

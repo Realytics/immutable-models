@@ -2,6 +2,7 @@
 import { Iterable, Map } from 'immutable';
 
 export interface TypedMap<T> extends Map<keyof T, any> {
+  get<K extends keyof T>(key: K, notSetValue?: T[K]): T[K];
   set<K extends keyof T>(key: K, value: T[K]): this;
   delete(key: keyof T): this;
   remove(key: keyof T): this;

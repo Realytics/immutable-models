@@ -8,7 +8,7 @@ Create **immutable models** driven by [Immutable.js](https://facebook.github.io/
 **WARNING: PACKAGE IN DEVELOPMENT**
 
 ## Installation
-Immutable Models requires **Immutable.js 3.8.1 or later.**
+Immutable Models requires **Immutable.js 3.8.0 or later.**
 ```sh
 npm install --save immutable-models
 ```
@@ -109,8 +109,64 @@ export class User extends Model<UserShape> {
   hasPermission(permission: Permission): boolean {
     return this.getPermissions().contains(permission);
   }
+  
+  addPermission(permission: Permission): this {
+    return this.update('permissions', permissions => permissions.add(permission));
+  }
 }
 ```
+
+### ReadonlyModel
+If you want to store a lot of models, for example timeserie entry models, and you don't have to "update" it,
+we suggest to use simpler `ReadonlyModel<T>`.
+
+Same `User` class would look like:
+```typescript
+import { ReadonlyModel } from 'immutable-models';
+import { Permission } from './Permission';
+import { Set } from 'immutable';
+
+interface UserShape {
+  userName: string;
+  firstName?: string;
+  lastName?: string;
+  createdBy?: User;
+  permissions?: Set<Permission>;
+}
+
+export class User extends ReadonlyModel<UserShape> {
+  getUserName(): string {
+    return this.get('userName');
+  }
+  
+  getFirstName(): string {
+    return this.get('firstName');
+  }
+  
+  getLastName(): string {
+    return this.get('lastName');
+  }
+  
+  getFullName(): string {
+    return `${this.getFirstName()} ${this.getLastName()}`;
+  }
+  
+  getCreatedBy(): User {
+    return this.get('createdBy');
+  }
+  
+  getPermissions(): Set<Permission> {
+    return this.get('permissions', Set<Permission>());
+  }
+  
+  hasPermission(permission: Permission): boolean {
+    return this.getPermissions().contains(permission);
+  }
+}
+```
+Like you see, migration between `Model` and `ReadonlyModel` is very easy. Keep in mind, that `ReadonlyModel` doesn't implement
+`ValueObject` interface - `Immutable` will check objects references.
+
 ## Typings
 If you are using [TypeScript](https://www.typescriptlang.org/), you don't have to install typings - they are provided in npm package.
 
