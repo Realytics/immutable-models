@@ -68,14 +68,27 @@ const user = new User({
   userName: 'piotr', 
   permissions: Set([Permission.DEVELOPER]) 
 });
-user.getUserName(); // > piotr
-user.hasPermission(Permission.ADMIN); // false
 
-// we create adminUser based on user - immutable data
+user.getUserName(); // > piotr
+user.isAdmin(); // false
+
+
+// create admin user based on user - immutable data
 const adminUser = user.addPermission(Permission.ADMIN); // make me an admin!
+
 adminUser.getUserName(); // > piotr
-adminUser.hasPermission(Permission.ADMIN); // > true
-user.hasPermission(Permission.ADMIN); // false
+adminUser.isAdmin(); // > true
+user.isAdmin(); // > false
+
+
+// create another user
+const anotherUser = new User({
+  userName: 'lukasz',
+  createdBy: adminUser
+});
+
+anotherUser.isAdmin(); // > false
+anotherUser.isCreatedByAdmin(); // > true
 ```
 Like you see, `User` class hides complexity of Immutable.js structures and contains business logic. 
 
