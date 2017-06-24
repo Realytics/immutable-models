@@ -3,12 +3,17 @@ import { Map } from 'immutable';
 import { IterableModel } from './IterableModel';
 import { TypedMap } from './TypedMap';
 
+export namespace Model {
+  export type Data<T> = T | TypedMap<T>;
+  export type Mutator<T> = (data: TypedMap<T>) => any;
+}
+
 /**
  * The most common implementation of model based on immutable Map.
  */
 export abstract class Model<T> extends IterableModel<TypedMap<T>> {
 
-  constructor(initialData: T | TypedMap<T>) {
+  constructor(initialData: Model.Data<T>) {
     super((Map.isMap(initialData) ? initialData : Map<any, any>(initialData)) as TypedMap<T>);
   }
 
@@ -31,7 +36,7 @@ export abstract class Model<T> extends IterableModel<TypedMap<T>> {
   /**
    * Note: Only `set` and `merge` may be used mutatively.
    */
-  protected withMutations(mutator: (mutable: TypedMap<T>) => any): this {
+  protected withMutations(mutator: Model.Mutator<T>): this {
     return this.update(data => data.withMutations(mutator));
   }
 }
