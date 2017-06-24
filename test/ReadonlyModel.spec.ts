@@ -4,13 +4,22 @@ import { ReadonlyModel } from '../src/ReadonlyModel';
 describe('ReadonlyModel', () => {
   it('should allow to create model from native object', () => {
     // tslint:disable-next-line
-    class MyModel extends ReadonlyModel<{ a: string }> {
+    class MyModel extends ReadonlyModel<{ a?: string }> {
       getA(): string {
-        return this.get('a');
+        return this.get('a', 'a is not defined');
+      }
+      hasA(): boolean {
+        return this.has('a');
       }
     }
 
-    expect(new MyModel({ a: 'foo' }).getA()).toEqual('foo');
+    const modelWithA = new MyModel({ a: 'foo' });
+    expect(modelWithA.getA()).toEqual('foo');
+    expect(modelWithA.hasA()).toEqual(true);
+
+    const modelWithoutA = new MyModel({});
+    expect(modelWithoutA.getA()).toEqual('a is not defined');
+    expect(modelWithoutA.hasA()).toEqual(false);
   });
 
   it('should serialize to json', () => {

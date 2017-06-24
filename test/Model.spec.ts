@@ -1,7 +1,6 @@
 
 import { Map } from 'immutable';
 import { Model } from '../src/Model';
-import { TypedMap } from '../src/TypedMap';
 
 describe('Model', () => {
   it('should allow to create model both from native object and immutable Map', () => {
@@ -28,16 +27,32 @@ describe('Model', () => {
       removeA(): this {
         return this.remove('a');
       }
+      updateA(): this {
+        return this.update('a', a => a.toUpperCase());
+      }
+      hasA(): boolean {
+        return this.has('a');
+      }
     }
 
     let model = new MyModel({ a: 'foo' });
     expect(model.getA()).toEqual('foo');
+    expect(model.hasA()).toEqual(true);
+
     model = model.setA('bar');
     expect(model.getA()).toEqual('bar');
+    expect(model.hasA()).toEqual(true);
+
     model = model.removeA();
     expect(model.getA()).toEqual('a is empty');
+    expect(model.hasA()).toEqual(false);
+
     model = model.setA('foo');
     expect(model.getA()).toEqual('foo');
+    expect(model.hasA()).toEqual(true);
+
+    model = model.updateA();
+    expect(model.getA()).toEqual('FOO');
   });
 
   it('should allow to use merge shortcut method', () => {

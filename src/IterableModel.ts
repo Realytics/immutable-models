@@ -3,6 +3,10 @@ import * as Immutable from 'immutable';
 import { Iterable } from 'immutable';
 import { ValueObject } from './ValueObject';
 
+export namespace IterableModel {
+  export type Updater<T> = (data: T) => T;
+}
+
 /**
  * IterableModel - wrapper for any Iterable from Immutable.js package (List, Map, Set, etc.).
  * Implements ValueObject interface so we can use Immutable.is to compare two IterableModels.
@@ -53,7 +57,7 @@ export abstract class IterableModel<I extends Iterable<any, any>> implements Val
    * "Update" the model - create a new one with data transformed by a updater.
    * CAUTION: There is no type check on constructor arguments.
    */
-  protected update(updater: (data: I) => I, ...args: any[]): this {
+  protected update(updater: IterableModel.Updater<I>, ...args: any[]): this {
     return new (Object.getPrototypeOf(this).constructor)(updater(this.data), ...args);
   }
 
