@@ -11,7 +11,7 @@ export class ReadonlyModel<T> {
     this.data = data;
   }
 
-  toJSON(): Readonly<T> {
+  toJSON(): any {
     return this.data;
   }
 
