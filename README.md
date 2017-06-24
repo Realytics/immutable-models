@@ -5,8 +5,6 @@
 
 Create **immutable models** driven by [Immutable.js](https://facebook.github.io/immutable-js) iterables.
 
-**WARNING: PACKAGE IN DEVELOPMENT**
-
 ## Installation
 Immutable Models requires **Immutable.js 3.8.0 or later.**
 ```sh

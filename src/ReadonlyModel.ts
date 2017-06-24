@@ -2,7 +2,7 @@
 /**
  * It's similar to Model but without ImmutableJS for better performance. It's good for readonly data like timeserie.
  */
-export class ReadonlyModel<T> {
+export class ReadonlyModel<T extends object> {
 
   protected readonly data: Readonly<T>;
   private memoized: { [key: string]: any } = {};
@@ -15,8 +15,12 @@ export class ReadonlyModel<T> {
     return this.data;
   }
 
-  protected get<K extends keyof T>(key: K): T[K] {
-    return this.data[key];
+  protected get<K extends keyof T>(key: K, notSetValue?: T[K]): T[K] {
+    return this.has(key) ? this.data[key] : notSetValue;
+  }
+
+  protected has<K extends keyof T>(key: K): boolean {
+    return this.data.hasOwnProperty(key);
   }
 
   protected memoize<M>(key: string, getter: (data: Readonly<T>) => M): M {
