@@ -21,60 +21,14 @@ is no way to put additional logic in these models.
 
 Immutable Models wraps immutable structures and provides interfaces defined by a developer. 
 
-## Usage
-### IterableModel
-The basic class of this package is `IterableModel<I extends Iterable<any, any>>`. It's a simple wrapper for any iterable
-from Immutable.js.
-
-Let's say we want to create well defined `ModelHistory` model - see how simple it is:
-
-```typescript
-import { Stack } from 'immutable';
-import { IterableModel } from 'immutable-models';
-
-export class ModelHistory<T> extends IterableModel<Stack<T>> {
-  constructor(stack = Stack<T>()) {
-    super(stack);
-  }
-
-  getCurrent(): T {
-    return this.data.peek();
-  }
-
-  applyChange(model: T): this {
-    return this.update(data => data.push(model));
-  }
-
-  undoChange(): this {
-    return this.update(data => data.pop());
-  }
-
-  commitChanges(): this {
-    return this.update(data => data.take(1).toStack());
-  }
-
-  rollbackChanges(): this {
-    return this.update(data => data.takeLast(1).toStack());
-  }
-}
-```
-
-`IterableModel` implements `ValueObject` interface so it works well with `Immutable.is` function - content, not reference means.
-
-### Model
-More common use-cases are classic models like `User` or `Post`. That's why we've created another class - `Model<T>`.
-Basically it extends `IterableModel<Map<T>>` and provides some shortcut methods.
-
-Example of user model:
+Let's see some example:
 ```typescript
 import { Model } from 'immutable-models';
 import { Permission } from './Permission';
 import { Set } from 'immutable';
 
 interface UserShape {
-  userName: string;
-  firstName?: string;
-  lastName?: string;
+  userName: string
   createdBy?: User;
   permissions?: Set<Permission>;
 }
@@ -83,21 +37,17 @@ export class User extends Model<UserShape> {
   getUserName(): string {
     return this.get('userName');
   }
-  
-  getFirstName(): string {
-    return this.get('firstName');
-  }
-  
-  getLastName(): string {
-    return this.get('lastName');
-  }
-  
-  getFullName(): string {
-    return `${this.getFirstName()} ${this.getLastName()}`;
-  }
-  
+    
   getCreatedBy(): User {
     return this.get('createdBy');
+  }
+  
+  isAdmin(): boolean {
+    return this.hasPermission(Permission.ADMIN);
+  }
+  
+  isCreatedByAdmin(): boolean {
+    return this.getCreatedBy() ? this.getCreatedBy().isAdmin() : false;
   }
   
   getPermissions(): Set<Permission> {
@@ -112,58 +62,27 @@ export class User extends Model<UserShape> {
     return this.update('permissions', permissions => permissions.add(permission));
   }
 }
+
+// example usage
+const user = new User({ 
+  userName: 'piotr', 
+  permissions: Set([Permission.DEVELOPER]) 
+});
+user.getUserName(); // > piotr
+user.hasPermission(Permission.ADMIN); // false
+
+// we create adminUser based on user - immutable data
+const adminUser = user.addPermission(Permission.ADMIN); // make me an admin!
+adminUser.getUserName(); // > piotr
+adminUser.hasPermission(Permission.ADMIN); // > true
+user.hasPermission(Permission.ADMIN); // false
 ```
+Like you see, `User` class hides complexity of Immutable.js structures and contains business logic. 
 
-### ReadonlyModel
-If you want to store a lot of models, for example timeserie entry models, and you don't have to "update" it,
-we suggest to use simpler `ReadonlyModel<T>`.
+## Documentation
+It's not completed but we are working on it:
+ * [API Reference](doc/api/README.md)
 
-Same `User` class would look like:
-```typescript
-import { ReadonlyModel } from 'immutable-models';
-import { Permission } from './Permission';
-import { Set } from 'immutable';
-
-interface UserShape {
-  userName: string;
-  firstName?: string;
-  lastName?: string;
-  createdBy?: User;
-  permissions?: Set<Permission>;
-}
-
-export class User extends ReadonlyModel<UserShape> {
-  getUserName(): string {
-    return this.get('userName');
-  }
-  
-  getFirstName(): string {
-    return this.get('firstName');
-  }
-  
-  getLastName(): string {
-    return this.get('lastName');
-  }
-  
-  getFullName(): string {
-    return `${this.getFirstName()} ${this.getLastName()}`;
-  }
-  
-  getCreatedBy(): User {
-    return this.get('createdBy');
-  }
-  
-  getPermissions(): Set<Permission> {
-    return this.get('permissions', Set<Permission>());
-  }
-  
-  hasPermission(permission: Permission): boolean {
-    return this.getPermissions().contains(permission);
-  }
-}
-```
-Like you see, migration between `Model` and `ReadonlyModel` is very easy. Keep in mind, that `ReadonlyModel` doesn't implement
-`ValueObject` interface - `Immutable` will check objects references.
 
 ## Typings
 If you are using [TypeScript](https://www.typescriptlang.org/), you don't have to install typings - they are provided in npm package.

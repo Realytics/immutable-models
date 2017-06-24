@@ -8,11 +8,15 @@ export namespace IterableModel {
 }
 
 /**
- * IterableModel - wrapper for any Iterable from Immutable.js package (List, Map, Set, etc.).
- * Implements ValueObject interface so we can use Immutable.is to compare two IterableModels.
+ * The basic class of this package is IterableModel<I extends Iterable<any, any>>. It's a simple wrapper for any iterable from Immutable.js
+ * (List, Map, Set, etc.). With this class we can create well defined interfaces and hide Immutable.js complexity. It also implements
+ * ValueObject interface so we can use Immutable.is to compare two IterableModels.
  */
 export abstract class IterableModel<I extends Iterable<any, any>> implements ValueObject {
 
+  /**
+   * Get wrapped Immutable.js iterable from `IterableModel`. Throws error if passed model is not instance of `IterableModel`.
+   */
   static getWrappedImmutable<I extends Iterable<any, any>>(model: IterableModel<I>): I {
     if (!(model instanceof IterableModel)) {
       throw new TypeError('Cannot get wrapped immutable from object that is not a subtype of the IterableModel.');
@@ -54,8 +58,11 @@ export abstract class IterableModel<I extends Iterable<any, any>> implements Val
   }
 
   /**
-   * "Update" the model - create a new one with data transformed by a updater.
-   * CAUTION: There is no type check on constructor arguments.
+   * The way we can "mutate" iterable model is creating new one with new immutable data. To achieve it, use update method.
+   *
+   * NOTE:
+   * There is no typechecking in internal part of update method - if you want to have constructor signature incompatible with IterableModel,
+   * you have to modify update method.
    */
   protected update(updater: IterableModel.Updater<I>, ...args: any[]): this {
     return new (Object.getPrototypeOf(this).constructor)(updater(this.data), ...args);
